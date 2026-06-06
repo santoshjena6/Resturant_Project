@@ -8,7 +8,6 @@ const Hero = () => {
       className="min-h-screen bg-cream-bg bg-paper-texture relative overflow-hidden flex items-center"
     >
       {/* Decorative saffron top border */}
-      <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-punjabi-red via-punjabi-saffron to-mustard"></div>
 
       {/* Background decorative circle */}
       <div className="absolute right-0 top-0 w-[600px] h-[600px] bg-cream-dark rounded-full translate-x-1/3 -translate-y-1/4 opacity-60"></div>
@@ -78,7 +77,6 @@ const Hero = () => {
             className="flex justify-center items-end relative"
           >
             {/* Decorative warm circle behind mascot */}
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-80 h-80 md:w-[420px] md:h-[420px] bg-gradient-to-t from-punjabi-saffron/20 to-transparent rounded-full"></div>
 
             <motion.img
               src="/images/Doll.png"
@@ -113,7 +111,6 @@ const Hero = () => {
       </div>
 
       {/* Bottom decorative border */}
-      <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-r from-mustard via-punjabi-saffron to-punjabi-red"></div>
     </section>
   );
 };

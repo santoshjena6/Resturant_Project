@@ -80,7 +80,7 @@ const Reviews = () => {
   ];
 
   return (
-    <section id="reviews" className="py-20 md:py-28 bg-earthy-brown">
+    <section id="reviews" className="py-20 md:py-28 bg-white">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
 
         {/* Header */}
@@ -90,20 +90,20 @@ const Reviews = () => {
             <span className="text-punjabi-saffron text-sm font-bold uppercase tracking-widest">Real People. Real Reviews.</span>
             <div className="h-px w-12 bg-punjabi-saffron/60"></div>
           </div>
-          <h2 className="text-4xl md:text-5xl font-black text-white">
+          <h2 className="text-4xl md:text-5xl font-black text-text-main">
             What Our Guests <span className="text-punjabi-saffron">Say</span>
           </h2>
 
           {/* Google Rating Block */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-8">
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-5 flex items-center gap-5">
-              <div className="text-5xl font-black text-white">4.5</div>
+            <div className="bg-gray-50 border border-gray-100 backdrop-blur-sm rounded-2xl px-8 py-5 flex items-center gap-5">
+              <div className="text-5xl font-black text-text-main">4.5</div>
               <div>
                 <Stars count={5} />
-                <p className="text-white/60 text-sm mt-1 font-medium">Based on 6,600+ Reviews</p>
+                <p className="text-text-main/60 text-sm mt-1 font-medium">Based on 6,600+ Reviews</p>
                 <div className="flex items-center gap-2 mt-1">
                   <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" className="w-4 h-4" />
-                  <span className="text-white/50 text-xs">Google Maps</span>
+                  <span className="text-text-main/50 text-xs">Google Maps</span>
                 </div>
               </div>
             </div>
@@ -175,7 +175,7 @@ const Reviews = () => {
         <div className="flex justify-center gap-4 mt-10">
           <button
             onClick={prev}
-            className="w-12 h-12 rounded-full border-2 border-white/20 hover:border-punjabi-saffron text-white hover:text-punjabi-saffron flex items-center justify-center transition-all font-bold text-lg"
+            className="w-12 h-12 rounded-full border-2 border-gray-200 hover:border-punjabi-saffron text-text-main hover:text-punjabi-saffron flex items-center justify-center transition-all font-bold text-lg"
           >
             ←
           </button>
@@ -185,14 +185,14 @@ const Reviews = () => {
                 key={i}
                 onClick={() => setCurrent(i)}
                 className={`rounded-full transition-all duration-300 ${
-                  i === current ? 'bg-punjabi-saffron w-8 h-3' : 'bg-white/20 w-3 h-3'
+                  i === current ? 'bg-punjabi-saffron w-8 h-3' : 'bg-gray-200 w-3 h-3'
                 }`}
               />
             ))}
           </div>
           <button
             onClick={next}
-            className="w-12 h-12 rounded-full bg-punjabi-saffron hover:bg-white hover:text-earthy-brown text-white flex items-center justify-center transition-all font-bold text-lg"
+            className="w-12 h-12 rounded-full bg-punjabi-saffron hover:bg-gray-100 hover:text-text-main text-text-main flex items-center justify-center transition-all font-bold text-lg"
           >
             →
           </button>

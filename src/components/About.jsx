@@ -31,7 +31,7 @@ const About = () => {
             </div>
 
             {/* Punjabi quote below image */}
-            <div className="mt-4 bg-earthy-brown text-white px-6 py-4 rounded-2xl shadow-md">
+            <div className="mt-4 bg-gray-50 border border-gray-100 text-text-main px-6 py-4 rounded-2xl shadow-md">
               <p className="font-semibold text-lg italic text-orange-200">"Jithe pyaar, othe swaad."</p>
               <p className="text-white/60 text-sm mt-1">Where there is love, there is taste.</p>
             </div>

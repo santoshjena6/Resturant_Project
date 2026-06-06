@@ -29,7 +29,7 @@ const Navbar = () => {
         transition={{ duration: 0.6, ease: 'easeOut' }}
         className={`fixed w-full z-40 transition-all duration-300 ${
           scrolled
-            ? 'bg-[#5C3A21] shadow-lg py-3'
+            ? 'bg-white shadow-sm border-b border-gray-100 shadow-lg py-3'
             : 'bg-transparent py-5'
         }`}
       >
@@ -42,10 +42,10 @@ const Navbar = () => {
               className="w-12 h-12 object-contain rounded-full bg-white/10 p-0.5"
             />
             <div className="hidden sm:block">
-              <span className={`block font-bold text-lg leading-tight ${scrolled ? 'text-white' : 'text-earthy-brown'}`}>
+              <span className={`block font-bold text-lg leading-tight ${scrolled ? 'text-text-main' : 'text-earthy-brown'}`}>
                 Kake Da Minar
               </span>
-              <span className={`block text-xs tracking-widest uppercase ${scrolled ? 'text-orange-200' : 'text-text-muted'}`}>
+              <span className={`block text-xs tracking-widest uppercase ${scrolled ? 'text-text-muted' : 'text-text-muted'}`}>
                 Bhubaneswar
               </span>
             </div>
@@ -58,7 +58,7 @@ const Navbar = () => {
                 key={link.label}
                 href={link.href}
                 className={`font-semibold uppercase tracking-wider text-sm transition-colors ${
-                  scrolled ? 'text-orange-100 hover:text-white' : 'text-text-main hover:text-punjabi-saffron'
+                  scrolled ? 'text-orange-100 hover:text-text-main' : 'text-text-main hover:text-punjabi-saffron'
                 }`}
               >
                 {link.label}
@@ -66,7 +66,7 @@ const Navbar = () => {
             ))}
             <a
               href="#contact"
-              className="bg-punjabi-saffron text-white font-bold py-2 px-6 rounded-full hover:bg-[#d66516] transition-colors text-sm"
+              className="bg-punjabi-saffron text-text-main font-bold py-2 px-6 rounded-full hover:bg-[#d66516] transition-colors text-sm"
             >
               Book Table
             </a>
@@ -74,7 +74,7 @@ const Navbar = () => {
 
           {/* Mobile Toggle */}
           <button
-            className={`md:hidden ${scrolled ? 'text-white' : 'text-earthy-brown'}`}
+            className={`md:hidden ${scrolled ? 'text-text-main' : 'text-earthy-brown'}`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X size={28} /> : <MenuIcon size={28} />}
@@ -86,19 +86,19 @@ const Navbar = () => {
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
-            className="md:hidden bg-earthy-brown px-6 py-6 flex flex-col gap-5"
+            className="md:hidden bg-white border-b border-gray-100 px-6 py-6 flex flex-col gap-5"
           >
             {navLinks.map(link => (
               <a
                 key={link.label}
                 href={link.href}
-                className="text-orange-100 hover:text-white font-semibold uppercase tracking-wider text-base transition-colors"
+                className="text-orange-100 hover:text-text-main font-semibold uppercase tracking-wider text-base transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {link.label}
               </a>
             ))}
-            <a href="#contact" className="bg-punjabi-saffron text-white font-bold py-3 px-8 rounded-full text-center text-sm hover:bg-[#d66516] transition-colors">
+            <a href="#contact" className="bg-punjabi-saffron text-text-main font-bold py-3 px-8 rounded-full text-center text-sm hover:bg-[#d66516] transition-colors">
               Book Table
             </a>
           </motion.div>
@@ -108,7 +108,7 @@ const Navbar = () => {
       {/* Sticky floating Book Table button (mobile) */}
       <a
         href="#contact"
-        className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 md:hidden bg-punjabi-saffron text-white font-bold px-8 py-3 rounded-full shadow-lg text-sm tracking-wide"
+        className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 md:hidden bg-punjabi-saffron text-text-main font-bold px-8 py-3 rounded-full shadow-lg text-sm tracking-wide"
       >
         🍽️ Book a Table
       </a>
