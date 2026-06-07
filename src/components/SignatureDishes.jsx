@@ -1,116 +1,94 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Star, ArrowRight } from 'lucide-react';
 
 const dishes = [
   {
     name: 'Maharaja Non-Veg Thali',
-    desc: 'A royal spread — Tandoori Chicken, Mutton Curry, Dal Makhani, Pulao & Butter Naan.',
-    img: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&q=80',
+    desc: 'The definitive royal feast. Tandoori Chicken, Mutton Rogan Josh, Dal Makhani, Pulao & Butter Naan.',
+    img: '/images/maharaja_thali_hero.png',
     price: '₹899',
-    tag: '🏆 Bestseller',
+    tag: 'Elite Choice',
     veg: false,
   },
   {
     name: 'Tandoori Chicken',
-    desc: 'Marinated in yogurt & secret spices, roasted to perfection in our clay tandoor.',
+    desc: 'Marinated with 21 hand-picked spices, charred in a traditional clay tandoor for smoky perfection.',
     img: '/images/tandoori_chicken.png',
     price: '₹450',
-    tag: '🔥 Fan Favourite',
+    tag: 'Iconic',
     veg: false,
   },
   {
     name: 'Dal Makhani',
-    desc: 'Slow-cooked black lentils simmered overnight with fresh cream & desi ghee.',
+    desc: 'Slow-simmered for 24 hours with fresh cream and Desi Ghee for a velvety texture.',
     img: '/images/dal_makhani.png',
     price: '₹290',
-    tag: '💛 Must Try',
+    tag: 'Legacy',
     veg: true,
   },
   {
     name: 'Chicken Patiala',
-    desc: 'A rich, creamy Patiala-style chicken curry wrapped in a golden omelet.',
+    desc: 'Imperial Patiala-style chicken wrapped in a golden omelet — a visual and flavorful masterpiece.',
     img: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&q=80',
     price: '₹420',
-    tag: '👨‍🍳 Chef Special',
-    veg: false,
-  },
-  {
-    name: 'Patiala Lassi',
-    desc: 'The legendary thick sweet lassi topped with malai, dry fruits & a hint of saffron. Served chilled in a brass glass.',
-    img: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?auto=format&fit=crop&q=80',
-    price: '₹150',
-    tag: '🥛 Our Signature',
-    veg: true,
-  },
-  {
-    name: 'Butter Chicken',
-    desc: 'Tender chicken pieces in a velvety, mildly spiced tomato-cream gravy with fresh butter.',
-    img: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&q=80',
-    price: '₹480',
-    tag: '⭐ All-Time Fav',
+    tag: 'Signature',
     veg: false,
   },
 ];
 
 const SignatureDishes = () => {
   return (
-    <section id="dishes" className="py-20 md:py-28 bg-cream-bg">
+    <section id="menu" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
-
-        {/* Header */}
-        <div className="text-center mb-14">
-          <div className="flex items-center justify-center gap-3 mb-3">
-            <div className="h-px w-12 bg-punjabi-saffron"></div>
-            <span className="text-punjabi-saffron text-sm font-bold uppercase tracking-widest">From Our Kitchen</span>
-            <div className="h-px w-12 bg-punjabi-saffron"></div>
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+          <div className="max-w-2xl">
+            <p className="text-brand-saffron text-xs font-black uppercase tracking-[0.4em] mb-4">Curation</p>
+            <h2 className="text-5xl md:text-7xl font-serif font-black text-brand-brown leading-tight">
+              SIGNATURE <br />
+              <span className="text-brand-gold italic">COLLECTION</span>
+            </h2>
           </div>
-          <h2 className="text-4xl md:text-5xl font-black text-earthy-brown">
-            Signature <span className="text-punjabi-saffron">Dishes</span>
-          </h2>
-          <p className="text-text-muted mt-3 text-base max-w-xl mx-auto">
-            Each dish is a story — slow-cooked with love, secret spices, and the spirit of Punjab.
+          <p className="text-text-muted text-lg max-w-sm mb-2 font-light">
+            Each dish is a curated masterpiece, bridging centuries of Punjabi tradition with modern culinary excellence.
           </p>
         </div>
 
-        {/* Dish Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {dishes.map((dish, i) => (
             <motion.div
-              key={dish.name}
+              key={i}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              whileHover={{ y: -6, transition: { duration: 0.25 } }}
-              className="bg-white rounded-3xl overflow-hidden shadow-card border border-cream-dark group"
+              transition={{ delay: i * 0.1, duration: 0.8 }}
+              className="group"
             >
-              {/* Image */}
-              <div className="relative h-52 overflow-hidden">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-3xl mb-6 bg-brand-cream-dark">
                 <img
                   src={dish.img}
                   alt={dish.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                 />
-                {/* Veg/Non-veg dot */}
-                <div className={`absolute top-3 right-3 w-5 h-5 rounded-sm border-2 flex items-center justify-center bg-white ${dish.veg ? 'border-green-600' : 'border-red-600'}`}>
-                  <div className={`w-2.5 h-2.5 rounded-full ${dish.veg ? 'bg-green-600' : 'bg-red-600'}`}></div>
-                </div>
-                {/* Tag */}
-                <span className="absolute top-3 left-3 bg-punjabi-saffron text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500"></div>
+                <div className="absolute top-6 left-6 px-4 py-2 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest text-brand-brown shadow-lg">
                   {dish.tag}
-                </span>
+                </div>
               </div>
-
-              {/* Info */}
-              <div className="p-5">
-                <h3 className="text-lg font-bold text-earthy-brown mb-2 group-hover:text-punjabi-saffron transition-colors leading-tight">
-                  {dish.name}
-                </h3>
-                <p className="text-text-muted text-sm leading-relaxed mb-4">{dish.desc}</p>
-                <div className="flex items-center justify-between border-t border-cream-dark pt-4">
-                  <span className="text-punjabi-saffron font-black text-2xl">{dish.price}</span>
-                  <button className="bg-earthy-brown text-white text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full hover:bg-punjabi-saffron transition-colors">
-                    Order Now
+              
+              <div className="space-y-4">
+                <div className="flex justify-between items-start">
+                  <h3 className="text-2xl font-serif font-bold text-brand-brown group-hover:text-brand-gold transition-colors underline decoration-brand-gold/0 group-hover:decoration-brand-gold underline-offset-8 duration-500">
+                    {dish.name}
+                  </h3>
+                </div>
+                <p className="text-text-muted text-sm font-light leading-relaxed">
+                  {dish.desc}
+                </p>
+                <div className="flex items-center justify-between pt-2">
+                  <span className="text-xl font-serif font-black text-brand-brown">{dish.price}</span>
+                  <button className="w-10 h-10 rounded-full border border-brand-gold/20 flex items-center justify-center text-brand-gold hover:bg-brand-gold hover:text-white transition-all group-hover:scale-110">
+                    <ArrowRight size={18} />
                   </button>
                 </div>
               </div>
@@ -118,13 +96,10 @@ const SignatureDishes = () => {
           ))}
         </div>
 
-        {/* CTA */}
-        <div className="text-center mt-14">
-          <a
-            href="#menu"
-            className="inline-block border-2 border-earthy-brown text-earthy-brown font-bold py-3 px-10 rounded-full hover:bg-earthy-brown hover:text-white transition-colors text-sm tracking-wide"
-          >
-            View Full Menu →
+        <div className="text-center mt-20">
+          <a href="#full-menu" className="inline-flex items-center gap-4 text-brand-brown font-black text-[11px] uppercase tracking-[0.3em] group">
+            View the Complete Imperial Menu
+            <div className="w-12 h-px bg-brand-gold transition-all group-hover:w-20"></div>
           </a>
         </div>
       </div>

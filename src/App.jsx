@@ -3,31 +3,36 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
-import SignatureDishes from './components/SignatureDishes';
-import Menu from './components/Menu';
+import InteractiveThali from './components/InteractiveThali';
+import MenuBook from './components/MenuBook';
 import Gallery from './components/Gallery';
 import Reviews from './components/Reviews';
 import Reservation from './components/Reservation';
 import Footer from './components/Footer';
 
+
+import LocationContact from './components/LocationContact';
+
 function App() {
   return (
-    <div className="bg-cream-bg text-text-main min-h-screen font-sans">
+    <div className="bg-brand-cream text-brand-brown min-h-screen font-sans paper-texture">
       <AnimatePresence>
         <motion.div
           key="content"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8 }}
         >
           <Navbar />
           <Hero />
+
           <About />
-          <SignatureDishes />
-          <Menu />
+          <InteractiveThali />
+          <MenuBook />
           <Gallery />
           <Reviews />
           <Reservation />
+          <LocationContact />
           <Footer />
 
           {/* WhatsApp Floating Button */}

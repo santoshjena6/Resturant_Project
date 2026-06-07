@@ -1,89 +1,79 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const categories = ['All', 'Tandoor Se', 'Handi Se', 'Breads', 'Meetha', 'Thandai'];
-
-const menuItems = [
-  { name: 'Paneer Tikka', price: '₹250', cat: 'Tandoor Se', desc: 'Cottage cheese in spiced yogurt marinade' },
-  { name: 'Tandoori Chicken', price: '₹450', cat: 'Tandoor Se', desc: 'Whole chicken, clay oven roasted' },
-  { name: 'Butter Chicken', price: '₹480', cat: 'Handi Se', desc: 'Chicken in velvety tomato-cream gravy' },
-  { name: 'Dal Makhani', price: '₹290', cat: 'Handi Se', desc: 'Black lentils slow-cooked overnight' },
-  { name: 'Chicken Patiala', price: '₹420', cat: 'Handi Se', desc: 'Rich Patiala curry in golden omelet' },
-  { name: 'Mutton Rogan Josh', price: '₹550', cat: 'Handi Se', desc: 'Slow-braised mutton in Kashmiri spices' },
-  { name: 'Butter Naan', price: '₹60', cat: 'Breads', desc: 'Soft leavened bread from tandoor' },
-  { name: 'Garlic Naan', price: '₹80', cat: 'Breads', desc: 'Topped with garlic and fresh coriander' },
-  { name: 'Gulab Jamun', price: '₹120', cat: 'Meetha', desc: 'Soft dumplings in rose sugar syrup' },
-  { name: 'Kheer', price: '₹100', cat: 'Meetha', desc: 'Slow-cooked rice pudding with dry fruits' },
-  { name: 'Patiala Lassi', price: '₹150', cat: 'Thandai', desc: 'Thick sweet lassi with malai & dry fruits' },
-  { name: 'Jaljeera', price: '₹90', cat: 'Thandai', desc: 'Refreshing cumin-mint drink' },
-];
+const menuData = {
+  Starters: [
+    { name: 'Paneer Tikka Angare', price: '₹320', desc: 'Charred cottage cheese cubes, smoked with aromatic coal.' },
+    { name: 'Amritsari Machhi', price: '₹450', desc: 'Crispy carom-scented fish, a street-food classic refined.' },
+    { name: 'Seekh Kebab', price: '₹380', desc: 'Elegant lamb skewers infused with secret masalas.' },
+  ],
+  'Imperial Mains': [
+    { name: 'Murg Patiala', price: '₹480', desc: 'Signature chicken wrapped in a silken omelette.' },
+    { name: 'Dal Makhani', price: '₹290', desc: 'Velvety black lentils, slow-cooked for 24 hours.' },
+    { name: 'Sarson Da Saag', price: '₹290', desc: 'The heart of Punjab, served with white butter.' },
+  ],
+  Thalis: [
+    { name: 'Maharaja Non-Veg', price: '₹899', desc: 'The complete imperial feast for the elite diner.' },
+    { name: 'Maharaja Veg', price: '₹750', desc: 'Grand vegetarian spread of seasonal treasures.' },
+  ],
+};
 
 const Menu = () => {
-  const [active, setActive] = useState('All');
-
-  const filtered = active === 'All' ? menuItems : menuItems.filter(m => m.cat === active);
+  const [activeTab, setActiveTab] = useState('Starters');
 
   return (
-    <section id="menu" className="py-20 md:py-28 bg-cream-dark">
-      <div className="max-w-5xl mx-auto px-6 md:px-12">
-
-        {/* Header */}
-        <div className="text-center mb-14">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="h-px w-12 bg-punjabi-red"></div>
-            <span className="text-punjabi-saffron text-sm font-bold uppercase tracking-widest">Our Menu</span>
-            <div className="h-px w-12 bg-punjabi-red"></div>
+    <section id="menu" className="py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-20">
+          <div>
+            <p className="text-brand-saffron text-xs font-black uppercase tracking-[0.4em] mb-4">Selection</p>
+            <h2 className="text-5xl md:text-7xl font-serif font-black text-brand-brown">THE <span className="text-brand-gold italic">MENU</span></h2>
           </div>
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-earthy-brown">
-            Dhaba <span className="text-punjabi-saffron">Menu</span>
-          </h2>
-
-          {/* Category Tabs */}
-          <div className="flex flex-wrap justify-center gap-3 mt-10">
-            {categories.map(cat => (
+          
+          <div className="flex flex-wrap gap-10 mt-10 md:mt-0">
+            {Object.keys(menuData).map((cat) => (
               <button
                 key={cat}
-                onClick={() => setActive(cat)}
-                className={`px-5 py-2 rounded-full text-sm font-semibold border-2 transition-all duration-300 ${
-                  active === cat
-                    ? 'bg-punjabi-saffron border-punjabi-saffron text-white shadow-sm'
-                    : 'border-earthy-brown/20 text-text-muted hover:border-punjabi-saffron hover:text-punjabi-saffron bg-white'
+                onClick={() => setActiveTab(cat)}
+                className={`text-[11px] font-black uppercase tracking-[0.4em] transition-all relative pb-2 ${
+                  activeTab === cat ? 'text-brand-brown' : 'text-text-muted hover:text-brand-gold'
                 }`}
               >
                 {cat}
+                {activeTab === cat && (
+                  <motion.div layoutId="tab-underline" className="absolute bottom-0 left-0 w-full h-0.5 bg-brand-gold" />
+                )}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Menu List */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-0">
-          <AnimatePresence>
-            {filtered.map(item => (
-              <motion.div
-                layout
-                key={item.name}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="flex items-start justify-between gap-4 px-4 py-5 border-b border-earthy-brown/10 hover:bg-white transition-colors group"
-              >
-                <div className="flex-1">
-                  <h4 className="font-serif font-bold text-earthy-brown text-lg group-hover:text-punjabi-saffron transition-colors">
-                    {item.name}
-                  </h4>
-                  <p className="text-text-muted text-sm mt-1 italic">{item.desc}</p>
+        <div className="relative">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="grid grid-cols-1 md:grid-cols-2 gap-x-24 gap-y-12"
+            >
+              {menuData[activeTab].map((item, i) => (
+                <div key={i} className="group border-b border-brand-gold/10 pb-10">
+                  <div className="flex justify-between items-end mb-4">
+                    <h4 className="text-2xl font-serif font-bold text-brand-brown group-hover:text-brand-gold transition-colors">{item.name}</h4>
+                    <span className="text-xl font-serif font-black text-brand-maroon">{item.price}</span>
+                  </div>
+                  <p className="text-text-muted font-light leading-relaxed max-w-sm">{item.desc}</p>
                 </div>
-                <span className="text-punjabi-saffron font-bold text-lg font-serif whitespace-nowrap">{item.price}</span>
-              </motion.div>
-            ))}
+              ))}
+            </motion.div>
           </AnimatePresence>
-        </motion.div>
+        </div>
 
-        <div className="text-center mt-12">
-          <button className="border-2 border-earthy-brown text-earthy-brown font-bold py-3 px-8 rounded hover:bg-earthy-brown hover:text-white transition-colors text-sm inline-flex items-center gap-2">
-            📄 Download Full Menu
+        <div className="mt-24 flex justify-center">
+          <button className="bg-brand-brown text-white px-12 py-5 rounded-full font-black text-[10px] uppercase tracking-[0.3em] hover:bg-brand-gold transition-colors">
+            Download Full Menu PDF
           </button>
         </div>
       </div>

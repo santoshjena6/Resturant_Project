@@ -1,89 +1,72 @@
 import React from 'react';
+import { MapPin, Phone, Mail, Clock, Share2, Globe, MessageSquare } from 'lucide-react';
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="bg-white border-t border-gray-100 text-text-main">
-      {/* Top saffron border */}
-
-      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-16 pb-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-
-          {/* Brand */}
-          <div className="lg:col-span-1">
-            <div className="flex items-center gap-3 mb-4">
-              <img src="/images/logo.png" alt="Kake Da Minar Logo" className="w-14 h-14 object-contain rounded-full bg-white/10 p-1" />
-              <div>
-                <p className="font-display text-xl text-punjabi-saffron leading-tight">Kake Da Minar</p>
-                <p className="text-text-muted text-xs tracking-widest uppercase">Bhubaneswar</p>
-              </div>
-            </div>
-            <p className="text-text-muted text-sm leading-relaxed mb-6">
-              Authentic Punjabi Dhaba & Hyderabadi Biryani. Serving Bhubaneswar with love since 2009.
-            </p>
-            <div className="flex gap-3">
-              {[
-                { icon: 'fb', href: '#' },
-                { icon: 'ig', href: '#' },
-              ].map(s => (
-                <a
-                  key={s.icon}
-                  href={s.href}
-                  className="w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center text-text-muted hover:bg-punjabi-saffron hover:border-punjabi-saffron hover:text-white transition-all"
-                >
-                  {s.icon === 'fb' ? (
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-                  ) : (
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-                  )}
-                </a>
-              ))}
+    <footer className="bg-brand-brown pt-32 pb-12 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 border-b border-white/5 pb-24">
+        
+        {/* Brand */}
+        <div className="lg:col-span-5 space-y-10">
+          <div className="flex items-center gap-4">
+            <img src="/images/logo.png" alt="Logo" className="w-16 h-16 rounded-full border border-white/10 p-1" />
+            <div>
+              <h2 className="text-white font-serif font-black text-3xl tracking-tight leading-none uppercase">Kake Da <span className="text-brand-gold italic">Minar</span></h2>
+              <p className="text-white/30 text-[10px] uppercase font-black tracking-[0.4em] mt-2">Bhubaneswar Legacy</p>
             </div>
           </div>
-
-          {/* Links */}
-          <div>
-            <h4 className="font-bold uppercase tracking-widest text-xs text-punjabi-saffron mb-5 border-b border-gray-100 pb-2">Quick Links</h4>
-            <ul className="space-y-3">
-              {['Home', 'About', 'Menu', 'Gallery', 'Reviews', 'Contact'].map(link => (
-                <li key={link}>
-                  <a href={`#${link.toLowerCase()}`} className="text-text-muted hover:text-punjabi-saffron transition-colors text-sm">
-                    {link}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h4 className="font-bold uppercase tracking-widest text-xs text-punjabi-saffron mb-5 border-b border-gray-100 pb-2">Contact</h4>
-            <ul className="space-y-4 text-sm text-text-muted">
-              <li>📍 Bhubaneswar, Odisha 751024</li>
-              <li>📞 <a href="tel:+919876543210" className="hover:text-punjabi-saffron transition-colors">+91 98765 43210</a></li>
-              <li>✉️ <a href="mailto:info@kakedaminar.com" className="hover:text-punjabi-saffron transition-colors">info@kakedaminar.com</a></li>
-            </ul>
-          </div>
-
-          {/* Hours */}
-          <div>
-            <h4 className="font-bold uppercase tracking-widest text-xs text-punjabi-saffron mb-5 border-b border-gray-100 pb-2">Opening Hours</h4>
-            <ul className="space-y-3 text-sm">
-              <li className="flex justify-between text-text-muted">
-                <span>Monday – Friday</span>
-                <span className="text-punjabi-saffron font-semibold">12PM – 11PM</span>
-              </li>
-              <li className="flex justify-between text-text-muted">
-                <span>Saturday – Sunday</span>
-                <span className="text-punjabi-saffron font-semibold">12PM – 11:30PM</span>
-              </li>
-            </ul>
+          <p className="text-white/50 text-xl font-light leading-relaxed max-w-md italic font-display">
+            "We preserve the authentic soul of Punjabi heritage while redefining what luxury dining feels like in Odisha."
+          </p>
+          <div className="flex gap-4">
+            {[MessageSquare, Globe, Share2].map((Icon, i) => (
+              <a key={i} href="#" className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:text-brand-gold hover:border-brand-gold transition-all duration-500">
+                <Icon size={18} strokeWidth={1.5} />
+              </a>
+            ))}
           </div>
         </div>
 
-        {/* Bottom */}
-        <div className="border-t border-gray-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-text-muted text-sm">© {new Date().getFullYear()} Kake Da Minar. All rights reserved.</p>
-          <p className="text-text-muted text-sm flex items-center gap-1">Made with ❤️ in India</p>
+        {/* Links */}
+        <div className="lg:col-span-3 space-y-10">
+          <h4 className="text-brand-gold text-xs font-black uppercase tracking-[0.4em]">Explore</h4>
+          <ul className="space-y-6">
+            {['The Experience', 'Signature Menu', 'Gallery', 'Reservations', 'Contact'].map(link => (
+              <li key={link}>
+                <a href={`#${link.toLowerCase().split(' ')[0]}`} className="text-white/60 hover:text-white transition-colors text-sm font-bold uppercase tracking-widest">{link}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Info */}
+        <div className="lg:col-span-4 space-y-12">
+          <div className="space-y-4">
+            <h4 className="text-brand-gold text-xs font-black uppercase tracking-[0.4em]">Location</h4>
+            <p className="text-white/60 text-sm leading-relaxed max-w-xs font-light">
+              Manipal Hospital, Near OMFED Square, Aryapalli, Bhubaneswar, Odisha 751013
+            </p>
+          </div>
+          <div className="space-y-4">
+            <h4 className="text-brand-gold text-xs font-black uppercase tracking-[0.4em]">Direct Connect</h4>
+            <div className="space-y-2">
+              <p className="text-white text-xl font-black font-serif">+91 94371 23456</p>
+              <p className="text-white/40 text-xs font-bold tracking-widest uppercase">namaste@kakedaminar.com</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 md:px-12 mt-12 flex flex-col md:flex-row justify-between items-center gap-8">
+        <p className="text-white/20 text-[9px] uppercase font-black tracking-[0.5em]">
+          © {currentYear} KAKE DA MINAR. INDULGENCE REDEFINED.
+        </p>
+        <div className="flex gap-10">
+          <a href="#" className="text-white/20 hover:text-white text-[9px] uppercase font-black tracking-[0.4em] transition-colors">Privacy</a>
+          <a href="#" className="text-white/20 hover:text-white text-[9px] uppercase font-black tracking-[0.4em] transition-colors">Terms</a>
         </div>
       </div>
     </footer>

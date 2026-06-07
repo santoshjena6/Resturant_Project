@@ -1,118 +1,60 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Menu as MenuIcon, X, Phone } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60);
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
-    { label: 'Home', href: '#home' },
-    { label: 'About', href: '#about' },
-    { label: 'Menu', href: '#menu' },
-    { label: 'Gallery', href: '#gallery' },
-    { label: 'Reviews', href: '#reviews' },
-    { label: 'Contact', href: '#contact' },
+  const links = [
+    { name: 'Home', href: '#home' },
+    { name: 'Legacy', href: '#about' },
+    { name: 'Menu', href: '#menu' },
+    { name: 'Gallery', href: '#gallery' },
+    { name: 'Contact', href: '#contact' },
   ];
 
   return (
-    <>
-      <motion.nav
-        initial={{ y: -80 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-        className={`fixed w-full z-40 transition-all duration-300 ${
-          scrolled
-            ? 'bg-white shadow-sm border-b border-gray-100 shadow-lg py-3'
-            : 'bg-transparent py-5'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-          {/* Logo */}
-          <a href="#home" className="flex items-center gap-3">
-            <img
-              src="/images/logo.png"
-              alt="Kake Da Minar Logo"
-              className="w-12 h-12 object-contain rounded-full bg-white/10 p-0.5"
-            />
-            <div className="hidden sm:block">
-              <span className={`block font-bold text-lg leading-tight ${scrolled ? 'text-text-main' : 'text-earthy-brown'}`}>
-                Kake Da Minar
-              </span>
-              <span className={`block text-xs tracking-widest uppercase ${scrolled ? 'text-text-muted' : 'text-text-muted'}`}>
-                Bhubaneswar
-              </span>
-            </div>
-          </a>
-
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-7">
-            {navLinks.map(link => (
-              <a
-                key={link.label}
-                href={link.href}
-                className={`font-semibold uppercase tracking-wider text-sm transition-colors ${
-                  scrolled ? 'text-orange-100 hover:text-text-main' : 'text-text-main hover:text-punjabi-saffron'
-                }`}
-              >
-                {link.label}
-              </a>
-            ))}
-            <a
-              href="#contact"
-              className="bg-punjabi-saffron text-text-main font-bold py-2 px-6 rounded-full hover:bg-[#d66516] transition-colors text-sm"
-            >
-              Book Table
-            </a>
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-brand-brown py-2 shadow-2xl' : 'bg-transparent py-6'}`}>
+      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+        <a href="#home" className="flex items-center gap-3">
+          <img src="/images/logo.png" alt="Kake Da Minar Logo" className="w-12 h-12 md:w-16 md:h-16 rounded-full border border-white/20" />
+          <div className="flex flex-col text-left">
+            <span className="text-white font-serif font-black text-xl md:text-2xl tracking-tighter leading-none italic">KAKE DA</span>
+            <span className="text-brand-gold font-serif text-[10px] md:text-sm font-bold tracking-[0.3em] ml-1">MINAR</span>
           </div>
+        </a>
 
-          {/* Mobile Toggle */}
-          <button
-            className={`md:hidden ${scrolled ? 'text-text-main' : 'text-earthy-brown'}`}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X size={28} /> : <MenuIcon size={28} />}
-          </button>
+        {/* Desktop links */}
+        <div className="hidden lg:flex items-center gap-10">
+          {links.map(link => (
+            <a key={link.name} href={link.href} className="text-white/80 hover:text-brand-gold text-[10px] font-black uppercase tracking-[0.2em] transition-colors">{link.name}</a>
+          ))}
+          <a href="#reservation" className="bg-brand-gold text-brand-brown px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-white transition-colors">Book Table</a>
         </div>
 
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            className="md:hidden bg-white border-b border-gray-100 px-6 py-6 flex flex-col gap-5"
-          >
-            {navLinks.map(link => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="text-orange-100 hover:text-text-main font-semibold uppercase tracking-wider text-base transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {link.label}
-              </a>
-            ))}
-            <a href="#contact" className="bg-punjabi-saffron text-text-main font-bold py-3 px-8 rounded-full text-center text-sm hover:bg-[#d66516] transition-colors">
-              Book Table
-            </a>
-          </motion.div>
-        )}
-      </motion.nav>
+        {/* Mobile menu button */}
+        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="lg:hidden text-white">
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
 
-      {/* Sticky floating Book Table button (mobile) */}
-      <a
-        href="#contact"
-        className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 md:hidden bg-punjabi-saffron text-text-main font-bold px-8 py-3 rounded-full shadow-lg text-sm tracking-wide"
-      >
-        🍽️ Book a Table
-      </a>
-    </>
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden bg-brand-brown absolute top-full left-0 w-full p-6 border-t border-white/5 space-y-4">
+          {links.map(link => (
+            <a key={link.name} href={link.href} onClick={() => setMobileMenuOpen(false)} className="block text-white text-sm font-bold uppercase tracking-widest">{link.name}</a>
+          ))}
+          <a href="#reservation" onClick={() => setMobileMenuOpen(false)} className="block bg-brand-gold text-brand-brown px-8 py-4 rounded-full text-center text-[10px] font-black uppercase tracking-widest">Book Table</a>
+        </div>
+      )}
+    </nav>
   );
 };
 
