@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, ChevronLeft } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 
 const menuPages = [
   {
@@ -37,8 +37,29 @@ const menuPages = [
 ];
 
 const MenuBook = () => {
-  const [currentPage, setCurrentPage] = useState(-1); // -1: Cover, 0: Page 1, etc.
+  const [currentPage, setCurrentPage] = useState(-1);
   const totalPages = menuPages.length;
+  const sectionRef = useRef(null);
+  const autoOpened = useRef(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !autoOpened.current) {
+          // Section came into view — auto-open after brief delay
+          autoOpened.current = true;
+          setTimeout(() => setCurrentPage(0), 1200);
+        } else if (!entry.isIntersecting && autoOpened.current) {
+          // Section left view — close book and reset so it reopens next visit
+          autoOpened.current = false;
+          setCurrentPage(-1);
+        }
+      },
+      { threshold: 0.3 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   const handleNext = () => {
     if (currentPage < totalPages - 1) setCurrentPage(prev => prev + 1);
@@ -50,27 +71,53 @@ const MenuBook = () => {
 
   const containerVariants = {
     closed: { x: 0 },
-    opened: { x: '25%' } 
+    opened: { x: '50%' },
   };
 
   return (
-    <section id="menu" className="py-24 bg-brand-cream relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 text-center">
-        <motion.h2 
-          initial={{ opacity: 0, y: 20 }}
+    <section
+      id="menu"
+      ref={sectionRef}
+      className="py-14 relative overflow-hidden"
+      style={{
+        backgroundImage: 'url(/images/menu-background.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+      <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+        <motion.h2
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          className="text-4xl md:text-6xl font-serif font-black text-brand-brown mb-16 uppercase tracking-tighter"
+          className="text-3xl md:text-5xl font-serif font-black text-brand-brown mb-10 uppercase tracking-tighter"
         >
           ROYAL <span className="text-brand-gold italic">MENU</span>
         </motion.h2>
 
-        <div className="flex justify-center items-center h-[600px] md:h-[750px] perspective-[3000px]">
-          <motion.div 
+        <div className="flex justify-center items-center h-[520px] md:h-[650px] perspective-[3000px]">
+          <motion.div
             animate={currentPage === -1 ? "closed" : "opened"}
             variants={containerVariants}
-            transition={{ duration: 0.6, ease: "easeInOut" }}
-            className="relative w-[320px] h-[480px] md:w-[450px] md:h-[650px] preserve-3d"
+            transition={{ duration: 1.2, ease: "easeInOut" }}
+            className="relative w-[280px] h-[420px] md:w-[400px] md:h-[580px] preserve-3d"
           >
+
+            {/* Next page arrow — visible on right edge of current page */}
+            {currentPage < totalPages - 1 && (
+              <motion.button
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: [0, 8, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+                onClick={handleNext}
+                className="absolute -right-14 top-1/2 -translate-y-1/2 z-[300] flex flex-col items-center gap-2 cursor-pointer group"
+              >
+                <div className="w-10 h-10 rounded-full bg-brand-gold flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                  <ChevronLeft size={20} className="text-brand-brown rotate-180" />
+                </div>
+                <span className="text-[8px] font-black uppercase tracking-widest text-brand-gold/80">Next</span>
+              </motion.button>
+            )}
             
             {/* BASE PAGE */}
             <div className="absolute inset-0 bg-[#FDFBF7] shadow-xl rounded-r-lg border border-black/5 z-0 flex flex-col p-8 md:p-12">
@@ -85,48 +132,59 @@ const MenuBook = () => {
               const index = totalPages - 1 - revIndex;
               const isFlipped = currentPage > index;
               return (
-                <PageFlip 
+                <PageFlip
                   key={index}
                   isFlipped={isFlipped}
                   zIndex={isFlipped ? 50 + index : 50 - index}
-                  front={<div className="absolute inset-0 bg-[#FDFBF7] shadow-2xl rounded-r-lg border-l border-black/5 p-8 md:p-12 flex flex-col">
-                    <MenuContent page={page} pageNum={index + 1} total={totalPages} isVisible={currentPage === index} />
-                  </div>}
-                  back={<div className="absolute inset-0 bg-[#FDFBF7] shadow-inner rounded-l-lg border-r-[12px] border-brand-maroon/10 p-8 md:p-12 flex flex-col items-center justify-center overflow-hidden">
-                     <img src="/images/logo.png" alt="Logo" className="w-20 h-20 opacity-5 mb-4" />
-                     <div className="text-[10px] font-black text-brand-maroon/40 uppercase tracking-widest">Page {index + 1} Finished</div>
-                  </div>}
-                  onClick={() => !isFlipped && handleNext()}
+                  front={
+                    <div className="absolute inset-0 bg-[#FDFBF7] shadow-2xl rounded-r-lg border-l border-black/5 p-6 md:p-10 flex flex-col">
+                      <MenuContent page={page} pageNum={index + 1} total={totalPages} isVisible={currentPage === index} />
+                    </div>
+                  }
+                  back={
+                    <div className="absolute inset-0 bg-[#FDFBF7] shadow-inner rounded-l-lg border-r-[12px] border-brand-maroon/10 p-6 md:p-10 flex flex-col items-center justify-center overflow-hidden group">
+                      <img src="/images/logo.png" alt="Logo" className="w-16 h-16 opacity-5 mb-3" />
+                      <div className="text-[10px] font-black text-brand-maroon/30 uppercase tracking-widest mb-3">Page {index + 1} Finished</div>
+                      <div className="flex items-center gap-1 text-brand-maroon/30 text-[9px] font-black uppercase tracking-widest">
+                        <ChevronLeft size={12} /> tap to go back
+                      </div>
+                    </div>
+                  }
+                  onFrontClick={() => !isFlipped && handleNext()}
+                  onBackClick={() => isFlipped && handlePrev()}
                 />
               );
             })}
 
             {/* Cover Page */}
-            <PageFlip 
+            <PageFlip
               isFlipped={currentPage >= 0}
               zIndex={currentPage >= 0 ? 40 : 100}
-              front={<div className="absolute inset-0 rounded-r-lg overflow-hidden shadow-[20px_0_50px_rgba(0,0,0,0.3)]">
-                <img src="/images/menu.png" alt="Menu Cover" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-black/20"></div>
-                <div className="absolute bottom-16 inset-x-0 text-center">
-                   <div className="inline-block px-8 py-3 bg-brand-gold text-brand-brown rounded-full font-black text-[10px] uppercase tracking-widest shadow-xl">Open Menu</div>
+              front={
+                <div className="absolute inset-0 rounded-r-lg overflow-hidden shadow-[20px_0_50px_rgba(0,0,0,0.3)]">
+                  <img src="/images/menu.png" alt="Menu Cover" className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-black/20" />
+                  <div className="absolute bottom-12 inset-x-0 text-center">
+                    <div className="inline-block px-6 py-2.5 bg-brand-gold text-brand-brown rounded-full font-black text-[10px] uppercase tracking-widest shadow-xl">Open Menu</div>
+                  </div>
                 </div>
-              </div>}
-              back={<div className="absolute inset-0 bg-[#FDFBF7] shadow-inner rounded-l-lg p-10 flex flex-col items-center justify-center border-r-[12px] border-brand-maroon/20 overflow-hidden">
-                <img src="/images/logo.png" alt="Logo" className="w-24 h-24 mb-6 rounded-full shadow-lg" />
-                <h3 className="text-brand-brown font-serif text-2xl italic">Welcome to</h3>
-                <h4 className="text-brand-maroon font-serif text-4xl font-black uppercase tracking-widest mt-2">Kake Da Minar</h4>
-                <div className="w-16 h-[2px] bg-brand-maroon my-8"></div>
-                <p className="text-brand-brown/70 text-xs uppercase tracking-widest text-center font-bold">Authentic Punjabi Cuisine <br/> Since 1990</p>
-              </div>}
-              onClick={() => currentPage === -1 && handleNext()}
+              }
+              back={
+                <div className="absolute inset-0 bg-[#FDFBF7] shadow-inner rounded-l-lg p-8 flex flex-col items-center justify-center border-r-[12px] border-brand-maroon/20 overflow-hidden">
+                  <img src="/images/logo.png" alt="Logo" className="w-14 h-14 mb-3 rounded-full shadow-lg" />
+                  <h3 className="text-brand-brown font-serif text-base italic">Welcome to</h3>
+                  <h4 className="text-brand-maroon font-serif text-xl font-black uppercase tracking-widest mt-1">Kake Da Minar</h4>
+                  <div className="w-10 h-[2px] bg-brand-maroon my-4" />
+                  <p className="text-brand-brown/70 text-xs uppercase tracking-widest text-center font-bold">Authentic Punjabi Cuisine <br /> Since 2009</p>
+                  <div className="flex items-center gap-1 text-brand-maroon/30 text-[9px] font-black uppercase tracking-widest mt-4">
+                    <ChevronLeft size={12} /> tap to close
+                  </div>
+                </div>
+              }
+              onFrontClick={() => currentPage === -1 && handleNext()}
+              onBackClick={() => currentPage >= 0 && handlePrev()}
             />
 
-            {/* CONTROLS */}
-            <div className="absolute -bottom-24 inset-x-0 flex justify-between items-center z-[200]">
-               <button onClick={handlePrev} disabled={currentPage === -1} className={`flex items-center gap-2 px-6 py-2 rounded-full border border-brand-maroon/20 text-brand-maroon font-black text-[10px] uppercase tracking-widest bg-white hover:bg-brand-maroon hover:text-white transition-all ${currentPage === -1 ? 'opacity-0' : 'shadow-lg'}`}><ChevronLeft size={16} /> Previous</button>
-               <button onClick={handleNext} disabled={currentPage === totalPages - 1} className={`flex items-center gap-2 px-6 py-2 rounded-full border border-brand-maroon/20 text-brand-maroon font-black text-[10px] uppercase tracking-widest bg-white hover:bg-brand-maroon hover:text-white transition-all ${currentPage === totalPages - 1 ? 'opacity-0' : 'shadow-lg'}`}>Next <ChevronRight size={16} /></button>
-            </div>
 
           </motion.div>
         </div>
@@ -135,35 +193,51 @@ const MenuBook = () => {
   );
 };
 
-const PageFlip = ({ isFlipped, front, back, zIndex, onClick }) => (
+const PageFlip = ({ isFlipped, front, back, zIndex, onFrontClick, onBackClick }) => (
   <motion.div
     initial={false}
     animate={{ rotateY: isFlipped ? -180 : 0 }}
-    transition={{ duration: 0.8, ease: "easeInOut" }}
+    transition={{ duration: 1.4, ease: [0.25, 0.1, 0.25, 1] }}
     style={{ transformStyle: 'preserve-3d', zIndex }}
-    onClick={onClick}
-    className="absolute inset-0 w-full h-full cursor-pointer origin-left"
+    className="absolute inset-0 w-full h-full origin-left"
   >
-    <div className="absolute inset-0 w-full h-full" style={{ backfaceVisibility: 'hidden' }}>{front}</div>
-    <div className="absolute inset-0 w-full h-full" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>{back}</div>
+    <div
+      onClick={onFrontClick}
+      className="absolute inset-0 w-full h-full cursor-pointer"
+      style={{ backfaceVisibility: 'hidden' }}
+    >
+      {front}
+    </div>
+    <div
+      onClick={onBackClick}
+      className="absolute inset-0 w-full h-full cursor-pointer"
+      style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+    >
+      {back}
+    </div>
   </motion.div>
 );
 
 const MenuContent = ({ page, pageNum, total, isVisible }) => (
   <div className="flex flex-col h-full text-left">
-    <div className="mb-8 border-l-4 border-brand-maroon pl-4">
-      <p className="text-[10px] font-black text-brand-maroon uppercase tracking-widest mb-1">Chapter {pageNum}</p>
-      <h4 className="text-2xl md:text-3xl font-serif font-black text-brand-maroon uppercase tracking-tight">{page.category}</h4>
+    <div className="mb-5 border-l-4 border-brand-maroon pl-3">
+      <p className="text-[9px] font-black text-brand-maroon uppercase tracking-widest mb-1">Chapter {pageNum}</p>
+      <h4 className="text-lg md:text-xl font-serif font-black text-brand-maroon uppercase tracking-tight">{page.category}</h4>
     </div>
-    <div className="space-y-4 md:space-y-6 flex-grow">
+    <div className="space-y-3 md:space-y-4 flex-grow">
       {page.items.map((item, i) => (
-        <div key={i} className="flex justify-between items-end border-b border-brand-maroon/10 pb-2">
-          <div className="flex flex-col"><span className="font-bold text-brand-brown">{item.name}</span><span className="text-[10px] text-brand-maroon/40 font-bold uppercase tracking-widest">Chef Special</span></div>
-          <span className="font-display text-xl md:text-2xl font-black text-brand-maroon">{item.price}</span>
+        <div key={i} className="flex justify-between items-end border-b border-brand-maroon/10 pb-1.5">
+          <div className="flex flex-col"><span className="font-bold text-brand-brown text-sm">{item.name}</span><span className="text-[9px] text-brand-maroon/40 font-bold uppercase tracking-widest">Chef Special</span></div>
+          <span className="font-display text-lg md:text-xl font-black text-brand-maroon">{item.price}</span>
         </div>
       ))}
     </div>
-    <div className="mt-8 text-center text-brand-maroon/20 text-[10px] font-black uppercase tracking-[0.3em]">Royal Legacy Since 1990</div>
+    <div className="mt-5 flex items-center justify-between">
+      <div className="text-brand-maroon/20 text-[9px] font-black uppercase tracking-[0.3em]">Royal Legacy · Since 2009</div>
+      <div className="flex items-center gap-1 text-brand-maroon/40 text-[9px] font-black uppercase tracking-widest animate-pulse">
+        click for next &rsaquo;
+      </div>
+    </div>
   </div>
 );
 
